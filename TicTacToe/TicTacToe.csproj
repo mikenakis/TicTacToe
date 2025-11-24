@@ -1,0 +1,45 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<!-- PEARL: The TargetFramework must be an exact installed version, otherwise there will be an error saying
+		that no version of MSBuild was found, please register one. -->
+		<TargetFramework>net9.0</TargetFramework>
+		<OutputType>Exe</OutputType>
+		<Configurations>Debug;Release</Configurations>
+		<!-- This will be created by MikeNakis.SvgConvert -->
+		<ApplicationIcon>$(BaseIntermediateOutputPath)\$(AssemblyName).ico</ApplicationIcon>
+	</PropertyGroup>
+
+	<Import Project="..\AllProjects.proj.xml" />
+	<Import Project="..\BannedApiAnalyzers.proj.xml" />
+
+	<!-- PEARL: Dotnet does not support swapping between package and project dependencies. The following nonsense is
+	            necessary to work around this limitation. See https://github.com/dotnet/project-system/issues/195 -->
+	<Choose>
+		<When Condition="Exists('..\..\MikeNakis.Kit\MikeNakis.Kit\MikeNakis.Kit.csproj')">
+			<ItemGroup>
+				<ProjectReference Include="..\..\MikeNakis.Kit\MikeNakis.Kit\MikeNakis.Kit.csproj" />
+			</ItemGroup>
+		</When>
+		<Otherwise>
+			<ItemGroup>
+				<PackageReference Include="MikeNakis.Kit-$(PackagesConfiguration)" Version="2.*" PrivateAssests="All" />
+			</ItemGroup>
+		</Otherwise>
+	</Choose>
+
+	<!-- MikeNakis.SvgConvert boilerplate -->
+	 <ItemGroup>
+ 		<SvgConvertInput Include="**/*.ico.svg" />
+ 		<AvailableItemName Include="SvgConvertInput" />
+	 </ItemGroup>
+	 <Target Name="SvgConvertTarget" BeforeTargets="BeforeBuild" Inputs="@(SvgConvertInput)"
+			Outputs="@(SvgConvertInput->'$(BaseIntermediateOutputPath)%(Filename)')">
+ 		<Message Importance="High"
+			Text="MikeNakis.SvgConvert %(SvgConvertInput.FullPath) $(BaseIntermediateOutputPath)%(SvgConvertInput.Filename)" />
+ 		<Exec WorkingDirectory="$(MSBuildProjectDirectory)" IgnoreExitCode="False" IgnoreStandardErrorWarningFormat="True"
+			StandardOutputImportance="High" StandardErrorImportance="High" ConsoleToMsBuild="True"
+			Command="cmd /c MikeNakis.SvgConvert windows-ico &quot;%(SvgConvertInput.FullPath)&quot; &quot;$(BaseIntermediateOutputPath)%(SvgConvertInput.Filename)&quot;" />
+	 </Target>
+
+</Project>
