@@ -1,11 +1,5 @@
 #!/bin/bash
 
-set -o errexit -o nounset -o pipefail
+declare -r my_directory=$(dirname $(realpath --relative-to="$PWD" "$0"))
 
-bash ../MikeNakis.CommonFiles/copy_files.bash "$(dirname $0)" \
-.editorconfig \
-AllProjects.proj.xml \
-AllCode.globalconfig \
-ProductionCode.globalconfig \
-BannedApiAnalyzers.proj.xml \
-BannedSymbols.txt
+bash $my_directory/../MikeNakis.CommonFiles/copy_files_for_project.bash --target-directory=$my_directory

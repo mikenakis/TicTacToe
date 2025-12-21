@@ -1,7 +1,17 @@
 <Solution>
   <Folder Name="/_Solution Items/">
+    <File Path=".editorconfig" />
+    <File Path=".gitattributes" />
     <File Path=".gitignore" />
+    <File Path="AllCode.globalconfig" />
+    <File Path="AllProjects.proj.xml" />
+    <File Path="BannedApiAnalyzers.proj.xml" />
+    <File Path="BannedSymbols.txt" />
+    <File Path="common_files.txt" />
+    <File Path="get_common_files.bash" />
+    <File Path="ProductionCode.globalconfig" />
     <File Path="README.md" />
+    <File Path="TestCode.globalconfig" />
   </Folder>
   <Project Path="TicTacToe\TicTacToe.csproj" />
 </Solution>

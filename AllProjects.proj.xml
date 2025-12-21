@@ -60,6 +60,11 @@
 		        than the following then all debugging breaks, and even if you set it to the following, edit-and-continue breaks. -->
 		<!--<PathMap Condition="'$(NoPathMap)' != 'True'">$(MSBuildProjectDirectory)=.\..\$(MSBuildProjectName)</PathMap>-->
 
+		<!-- PEARL: MSBuild will automagically append a pile of garbage (a git commit hash) to the assembly
+		     informational version attribute in the auto-generated AssemblyInfo.cs. The following magical incantation is
+			 necessary to prevent this from happening. Found here: https://stackoverflow.com/a/77051386/773113. -->
+		<IncludeSourceRevisionInInformationalVersion>false</IncludeSourceRevisionInInformationalVersion>
+		
 	</PropertyGroup>
 
 	<Choose>
@@ -90,7 +95,7 @@
 				<CheckForOverflowUnderflow>False</CheckForOverflowUnderflow>
 				<Optimize>True</Optimize>
 				<EnableNETAnalyzers>False</EnableNETAnalyzers>
-				<PackagesConfiguration>Release</PackagesConfiguration>
+				<PackagesConfiguration>Develop</PackagesConfiguration>
 				<DebugType>Portable</DebugType>
 				<OutputPath>bin\$(Configuration)\</OutputPath>
 			</PropertyGroup>
@@ -172,10 +177,14 @@
 		<PackageReference Include="MSTest.TestFramework" Version="3.6.2" />
 	</ItemGroup>
 
-	<ItemGroup>
-		<!-- See "Enable debugging and diagnostics with Source Link"
-		    https://learn.microsoft.com/en-us/visualstudio/debugger/how-to-improve-diagnostics-debugging-with-sourcelink -->
-		<!--<PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1" PrivateAssets="All"/>-->
-	</ItemGroup>
+	<Target Name="VersioningTarget">
+		<Exec Command="bash ../get_version.bash" ConsoleToMsBuild="True" StandardOutputImportance="Low">
+			<Output TaskParameter="ConsoleOutput" PropertyName="Version" />
+		</Exec>
+		<Message Importance="High" Text="$(MSBuildProjectName) version: '$(Version)'" />
+		<PropertyGroup>
+			<PackageVersion>$(Version)</PackageVersion>
+		</PropertyGroup>
+	</Target>
 
 </Project>
