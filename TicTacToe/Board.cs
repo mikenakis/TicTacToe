@@ -85,14 +85,14 @@ sealed class Board
 	static readonly ImmutableArray<Pathway> pathways =
 	[
 		new Pathway( 0, 0, 1, 0 ),
-			new Pathway( 0, 1, 1, 0 ),
-			new Pathway( 0, 2, 1, 0 ),
-			new Pathway( 0, 0, 0, 1 ),
-			new Pathway( 1, 0, 0, 1 ),
-			new Pathway( 2, 0, 0, 1 ),
-			new Pathway( 0, 0, 1, 1 ),
-			new Pathway( 2, 0, -1, 1 ),
-		];
+		new Pathway( 0, 1, 1, 0 ),
+		new Pathway( 0, 2, 1, 0 ),
+		new Pathway( 0, 0, 0, 1 ),
+		new Pathway( 1, 0, 0, 1 ),
+		new Pathway( 2, 0, 0, 1 ),
+		new Pathway( 0, 0, 1, 1 ),
+		new Pathway( 2, 0, -1, 1 ),
+	];
 
 	public bool IsValidMove( int x, int y )
 	{

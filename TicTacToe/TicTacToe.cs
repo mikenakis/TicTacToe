@@ -4,12 +4,11 @@ using MikeNakis.Kit.Extensions;
 using static MikeNakis.Kit.GlobalStatics;
 using Sys = System;
 
-sealed class TicTacToeMain
+sealed class TicTacToe
 {
-
-	public static void Main()
+	public static void Main2()
 	{
-		Board board = new();
+		Board board = new Board();
 
 		char player = 'X';
 		while( true )
