@@ -13,5 +13,6 @@
     <File Path="README.md" />
     <File Path="TestCode.globalconfig" />
   </Folder>
+  <Project Path="TicTacToe Test/TicTacToe Test.csproj" />
   <Project Path="TicTacToe\TicTacToe.csproj" />
 </Solution>

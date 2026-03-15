@@ -2,50 +2,33 @@ namespace TicTacToe;
 
 using MikeNakis.Kit.Extensions;
 using static MikeNakis.Kit.GlobalStatics;
-using Sys = System;
 
-sealed class TicTacToe
+public sealed class TicTacToe
 {
-	public static void Main2()
+	readonly Board board = new Board();
+	public char CurrentPlayer { get; private set; } = 'X';
+	public char? Winner { get; private set; }
+
+	public void Print()
 	{
-		Board board = new Board();
+		board.Print();
+	}
 
-		char player = 'X';
-		while( true )
+	public bool MakeMove( char c )
+	{
+		Assert( "123456789".Contains2( c ) );
+		int n = c - '1';
+		Assert( n is >= 0 and < 9 );
+		(int x, int y) = getXAndYFromN( n );
+		if( !board.IsValidMove( x, y ) )
+			return false;
+		if( board.MakeMoveAndCheckIfComplete( x, y, CurrentPlayer ) )
 		{
-			board.Print();
-
-			Sys.Console.Write( $"Player {player} make a move: " );
-			char c = Sys.Console.ReadKey().KeyChar;
-			Sys.Console.WriteLine();
-			if( !"123456789".Contains2( c ) )
-			{
-				Sys.Console.WriteLine( "Expected a number!" );
-				continue;
-			}
-			int n = c - '1';
-			Assert( n is >= 0 and < 9 );
-			(int x, int y) = getXAndYFromN( n );
-			if( !board.IsValidMove( x, y ) )
-			{
-				Sys.Console.WriteLine( "Invalid move!" );
-				continue;
-			}
-
-			if( board.MakeMoveAndCheckIfComplete( x, y, player ) )
-			{
-				board.Print();
-				Sys.Console.WriteLine( "=============" );
-				Sys.Console.WriteLine( $"Player {player} has won!" );
-				Sys.Console.WriteLine( "=============" );
-				break;
-			}
-
-			player = togglePlayer( player );
+			Winner = CurrentPlayer;
+			return true;
 		}
-
-		Sys.Console.Write( "Press [Enter] to terminate: " );
-		Sys.Console.ReadLine();
+		CurrentPlayer = togglePlayer( CurrentPlayer );
+		return true;
 	}
 
 	static char togglePlayer( char player )
@@ -60,5 +43,10 @@ sealed class TicTacToe
 		int y = n / 3;
 		int x = n % 3;
 		return (x, y);
+	}
+
+	public override string ToString()
+	{
+		return board.ToString();
 	}
 }

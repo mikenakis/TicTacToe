@@ -71,7 +71,7 @@ sealed class Board
 		{
 			int xi = StartX;
 			int yi = StartY;
-			for( int i = 1; i < 2; i++ )
+			for( int i = 0; i < 3; i++ )
 			{
 				if( xi == x && yi == y )
 					return true;
@@ -84,14 +84,14 @@ sealed class Board
 
 	static readonly ImmutableArray<Pathway> pathways =
 	[
-		new Pathway( 0, 0, 1, 0 ),
-		new Pathway( 0, 1, 1, 0 ),
-		new Pathway( 0, 2, 1, 0 ),
-		new Pathway( 0, 0, 0, 1 ),
-		new Pathway( 1, 0, 0, 1 ),
-		new Pathway( 2, 0, 0, 1 ),
-		new Pathway( 0, 0, 1, 1 ),
-		new Pathway( 2, 0, -1, 1 ),
+		new Pathway( startX: 0, startY: 0, deltaX: 1, deltaY: 0 ),
+		new Pathway( startX: 0, startY: 1, deltaX: 1, deltaY: 0 ),
+		new Pathway( startX: 0, startY: 2, deltaX: 1, deltaY: 0 ),
+		new Pathway( startX: 0, startY: 0, deltaX: 0, deltaY: 1 ),
+		new Pathway( startX: 1, startY: 0, deltaX: 0, deltaY: 1 ),
+		new Pathway( startX: 2, startY: 0, deltaX: 0, deltaY: 1 ),
+		new Pathway( startX: 0, startY: 0, deltaX: 1, deltaY: 1 ),
+		new Pathway( startX: 2, startY: 0, deltaX: -1, deltaY: 1 ),
 	];
 
 	public bool IsValidMove( int x, int y )
@@ -118,7 +118,7 @@ sealed class Board
 			char c = chars[y, x];
 			if( c is not 'X' or 'O' )
 				return false;
-			for( int i = 1; i < 2; i++ )
+			for( int i = 1; i < 3; i++ )
 			{
 				x += pathway.DeltaX;
 				y += pathway.DeltaY;
@@ -127,5 +127,12 @@ sealed class Board
 			}
 			return true;
 		}
+	}
+
+	public override string ToString()
+	{
+		return $"{chars[0, 0]}{chars[0, 1]}{chars[0, 2]}\n" +
+			   $"{chars[1, 0]}{chars[1, 1]}{chars[1, 2]}\n" +
+			   $"{chars[2, 0]}{chars[2, 1]}{chars[2, 2]}";
 	}
 }

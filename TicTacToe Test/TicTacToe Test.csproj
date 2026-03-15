@@ -1,0 +1,31 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>net9.0</TargetFramework>
+		<IsTestProject>True</IsTestProject>
+		<Configurations>Debug</Configurations>
+	</PropertyGroup>
+
+	<Import Project="..\AllProjects.proj.xml" />
+	<Import Project="..\BannedApiAnalyzers.proj.xml" />
+
+	<!-- PEARL: Dotnet does not support swapping between package and project dependencies. The following nonsense is
+	            necessary to work around this limitation. See https://github.com/dotnet/project-system/issues/195 -->
+	<Choose>
+		<When Condition="Exists('..\..\MikeNakis.Kit\MikeNakis.Kit\MikeNakis.Kit.csproj')">
+			<ItemGroup>
+				<ProjectReference Include="..\..\MikeNakis.Kit\MikeNakis.Kit\MikeNakis.Kit.csproj" />
+			</ItemGroup>
+		</When>
+		<Otherwise>
+			<ItemGroup>
+				<PackageReference Include="MikeNakis.Kit-$(PackagesConfiguration)" Version="2.*" PrivateAssests="All" />
+			</ItemGroup>
+		</Otherwise>
+	</Choose>
+
+	<ItemGroup>
+		<ProjectReference Include="..\TicTacToe\TicTacToe.csproj" />
+	</ItemGroup>
+
+</Project>
