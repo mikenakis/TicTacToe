@@ -7,28 +7,43 @@ public sealed class TicTacToe
 {
 	readonly Board board = new Board();
 	public char CurrentPlayer { get; private set; } = 'X';
-	public char? Winner { get; private set; }
 
 	public void Print()
 	{
 		board.Print();
 	}
 
-	public bool MakeMove( char c )
+	public void SetBoardState( string s )
+	{
+		Assert( s.Length == 9 );
+		board.SetBoardState( s );
+	}
+
+	public BoardStatus GetStatus()
+	{
+		return board.GetStatus();
+	}
+
+	public bool IsValidMove( char c )
 	{
 		Assert( "123456789".Contains2( c ) );
 		int n = c - '1';
 		Assert( n is >= 0 and < 9 );
 		(int x, int y) = getXAndYFromN( n );
-		if( !board.IsValidMove( x, y ) )
-			return false;
-		if( board.MakeMoveAndCheckIfComplete( x, y, CurrentPlayer ) )
-		{
-			Winner = CurrentPlayer;
-			return true;
-		}
-		CurrentPlayer = togglePlayer( CurrentPlayer );
-		return true;
+		return board.IsValidMove( x, y );
+	}
+
+	public void MakeMove( char c )
+	{
+		Assert( "123456789".Contains2( c ) );
+		int n = c - '1';
+		Assert( n is >= 0 and < 9 );
+		(int x, int y) = getXAndYFromN( n );
+		Assert( board.IsValidMove( x, y ) );
+		board.MakeMove( x, y, CurrentPlayer );
+		BoardStatus boardStatus = board.GetStatus();
+		if( boardStatus == BoardStatus.InProgress )
+			CurrentPlayer = togglePlayer( CurrentPlayer );
 	}
 
 	static char togglePlayer( char player )

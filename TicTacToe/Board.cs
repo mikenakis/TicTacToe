@@ -1,6 +1,7 @@
 namespace TicTacToe;
 
 using System.Collections.Immutable;
+using MikeNakis.Kit;
 using static MikeNakis.Kit.GlobalStatics;
 using Sys = System;
 
@@ -9,13 +10,13 @@ sealed class Board
 	readonly char[,] chars;
 
 	public Board()
-		: this( new string( ' ', 9 ) )
-	{
-	}
-
-	public Board( string s )
 	{
 		chars = new char[3, 3];
+		SetBoardState( new string( ' ', 9 ) );
+	}
+
+	public void SetBoardState( string s )
+	{
 		int i = 0;
 		for( int y = 0; y < 3; y++ )
 			for( int x = 0; x < 3; x++ )
@@ -99,33 +100,54 @@ sealed class Board
 		return chars[y, x] is not 'X' or 'O';
 	}
 
-	public bool MakeMoveAndCheckIfComplete( int x, int y, char c )
+	public void MakeMove( int x, int y, char c )
 	{
 		Assert( c is 'X' or 'O' );
 		Assert( IsValidMove( x, y ) );
 		chars[y, x] = c;
+	}
 
+	public bool IsComplete()
+	{
+		for( int y = 0; y < 3; y++ )
+			for( int x = 0; x < 3; x++ )
+			{
+				char c = chars[y, x];
+				if( c is not ('X' or 'O') )
+					return false;
+			}
+		return true;
+	}
+
+	public BoardStatus GetStatus()
+	{
 		foreach( Pathway pathway in pathways )
-			if( pathway.Contains( x, y ) )
-				if( isComplete( pathway ) )
-					return true;
-		return false;
+		{
+			BoardStatus status = getPathwayStatus( pathway );
+			if( status is not BoardStatus.InProgress )
+				return status;
+		}
+		return IsComplete() ? BoardStatus.Draw : BoardStatus.InProgress;
 
-		bool isComplete( Pathway pathway )
+		BoardStatus getPathwayStatus( Pathway pathway )
 		{
 			int x = pathway.StartX;
 			int y = pathway.StartY;
 			char c = chars[y, x];
-			if( c is not 'X' or 'O' )
-				return false;
+			if( c is not ('X' or 'O') )
+				return BoardStatus.InProgress;
 			for( int i = 1; i < 3; i++ )
 			{
 				x += pathway.DeltaX;
 				y += pathway.DeltaY;
 				if( chars[y, x] != c )
-					return false;
+					return BoardStatus.InProgress;
 			}
-			return true;
+			if( c == 'X' )
+				return BoardStatus.XWins;
+			if( c == 'O' )
+				return BoardStatus.OWins;
+			throw new AssertionFailureException();
 		}
 	}
 
