@@ -26,7 +26,12 @@ public sealed class TicTacToe
 
 	public bool IsValidMove( char c )
 	{
-		Assert( "123456789".Contains2( c ) );
+		return "123456789".Contains2( c );
+	}
+
+	public bool IsLegalMove( char c )
+	{
+		Assert( IsValidMove( c ) );
 		int n = c - '1';
 		Assert( n is >= 0 and < 9 );
 		(int x, int y) = getXAndYFromN( n );
@@ -35,7 +40,7 @@ public sealed class TicTacToe
 
 	public void MakeMove( char c )
 	{
-		Assert( "123456789".Contains2( c ) );
+		Assert( IsValidMove( c ) );
 		int n = c - '1';
 		Assert( n is >= 0 and < 9 );
 		(int x, int y) = getXAndYFromN( n );
