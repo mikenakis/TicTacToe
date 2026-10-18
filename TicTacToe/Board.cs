@@ -97,7 +97,7 @@ sealed class Board
 
 	public bool IsValidMove( int x, int y )
 	{
-		return chars[y, x] is not 'X' or 'O';
+		return chars[y, x] is not 'X' and not 'O';
 	}
 
 	public void MakeMove( int x, int y, char c )

@@ -3,7 +3,7 @@
 	<PropertyGroup>
 		<!-- PEARL: The TargetFramework must be an exact installed version, otherwise there will be an error saying
 		that no version of MSBuild was found, please register one. -->
-		<TargetFramework>net9.0</TargetFramework>
+		<TargetFramework>net10.0</TargetFramework>
 		<OutputType>Exe</OutputType>
 		<Configurations>Debug;Release</Configurations>
 		<!-- This will be created by MikeNakis.SvgConvert -->
