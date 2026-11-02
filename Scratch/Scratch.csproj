@@ -6,25 +6,9 @@
 		<TargetFramework>net10.0</TargetFramework>
 		<OutputType>Exe</OutputType>
 		<Configurations>Debug;Release</Configurations>
-		<!-- This will be created by MikeNakis.SvgConvert -->
-		<ApplicationIcon>$(BaseIntermediateOutputPath)\$(AssemblyName).ico</ApplicationIcon>
 	</PropertyGroup>
 
 	<Import Project="..\AllProjects.proj.xml" />
 	<Import Project="..\BannedApiAnalyzers.proj.xml" />
-
-	<!-- MikeNakis.SvgConvert boilerplate -->
-	 <ItemGroup>
- 		<SvgConvertInput Include="**/*.ico.svg" />
- 		<AvailableItemName Include="SvgConvertInput" />
-	 </ItemGroup>
-	 <Target Name="SvgConvertTarget" BeforeTargets="BeforeBuild" Inputs="@(SvgConvertInput)"
-			Outputs="@(SvgConvertInput->'$(BaseIntermediateOutputPath)%(Filename)')">
- 		<Message Importance="High"
-			Text="MikeNakis.SvgConvert %(SvgConvertInput.FullPath) $(BaseIntermediateOutputPath)%(SvgConvertInput.Filename)" />
- 		<Exec WorkingDirectory="$(MSBuildProjectDirectory)" IgnoreExitCode="False" IgnoreStandardErrorWarningFormat="True"
-			StandardOutputImportance="High" StandardErrorImportance="High" ConsoleToMsBuild="True"
-			Command="cmd /c MikeNakis.SvgConvert windows-ico &quot;%(SvgConvertInput.FullPath)&quot; &quot;$(BaseIntermediateOutputPath)%(SvgConvertInput.Filename)&quot;" />
-	 </Target>
 
 </Project>

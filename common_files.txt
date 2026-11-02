@@ -8,3 +8,4 @@ BannedSymbols.txt
 get_common_files.bash
 ProductionCode.globalconfig 
 TestCode.globalconfig 
+dotnet-tools.json .config/dotnet-tools.json
